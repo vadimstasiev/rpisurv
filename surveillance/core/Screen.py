@@ -203,7 +203,7 @@ class Screen:
                         placeholder_x = x1 + normal_fieldwidth
                         placeholder_y = y1
                         while count_placeholders < nr_of_placeholders:
-                            self.drawinstance.placeholder(placeholder_x, placeholder_y, normal_fieldwidth, normal_fieldheight, "images/placeholder.png")
+                            self.drawinstance.placeholder(placeholder_x, placeholder_y, normal_fieldwidth, normal_fieldheight, "images/placeholder.bmp")
                             count_placeholders = count_placeholders + 1
                             placeholder_x = placeholder_x + normal_fieldwidth
 
