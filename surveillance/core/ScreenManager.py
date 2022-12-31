@@ -209,7 +209,7 @@ class ScreenManager:
             counter = counter + 1
 
         #Show a connecting screen on first run, so that in case of many streams = long initial startup, the user knows what is happening.
-        self.drawinstance.placeholder(0, 0, int(self.display["resolution"]["width"]), int(self.display["resolution"]["height"]), "images/connecting.png")
+        self.drawinstance.placeholder(0, 0, int(self.display["resolution"]["width"]), int(self.display["resolution"]["height"]), "images/connecting.bmp")
         self.drawinstance.refresh()
 
     def get_disable_autorotation(self):

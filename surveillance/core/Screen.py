@@ -143,7 +143,7 @@ class Screen:
 
             if fields == 0:
                 #Draw no connectable placeholder
-                self.drawinstance.placeholder(0, 0, self.resolution_width, self.resolution_height, "images/noconnectable.png")
+                self.drawinstance.placeholder(0, 0, self.resolution_width, self.resolution_height, "images/noconnectable.bmp")
                 self.previous_connectable_camera_streams = self.connectable_camera_streams
                 return
 

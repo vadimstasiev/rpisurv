@@ -156,7 +156,7 @@ class Draw:
                        "-d", str(displayid),
                        "-x", "0",
                        "-y", "0",
-                       "images/blackbackground_3840_2160.png"
+                       "images/blackbackground_3840_2160.bmp"
                        ]
 
         self.blacklayer_proc = subprocess.Popen(command_line,shell=False, preexec_fn=os.setsid, stdin=subprocess.PIPE)
@@ -170,7 +170,7 @@ class Draw:
                        "-d", str(displayid),
                        "-x", "0",
                        "-y", "0",
-                       "images/blackbackground_3840_2160.png"
+                       "images/blackbackground_3840_2160.bmp"
                        ]
 
         self.blackbackground_proc = subprocess.Popen(command_line,shell=False, preexec_fn=os.setsid, stdin=subprocess.PIPE)

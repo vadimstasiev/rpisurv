@@ -170,7 +170,7 @@ class CameraStream:
 
     def show_status(self):
         self.calculate_field_geometry()
-        self.drawinstance.placeholder(self.coordinates[0], self.coordinates[1], self.normal_fieldwidth, self.normal_fieldheight, "images/connecting.png")
+        self.drawinstance.placeholder(self.coordinates[0], self.coordinates[1], self.normal_fieldwidth, self.normal_fieldheight, "images/connecting.bmp")
 
 
     def refresh_image_from_url(self):
