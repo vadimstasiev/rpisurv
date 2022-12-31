@@ -12,11 +12,11 @@ advanced:
   #- When an imageurl is used in a screen then caching of the next screen will be automatically disabled because underlying software (pygame) is currently not compatible with our layered-caching approach
   #- When a human sets this setting to "enable_opportunistic_caching_next_screen: False" (because he or she wants to exchange caching resources for more visible streams)
   #By default this is True
-  #enable_opportunistic_caching_next_screen: True
+  enable_opportunistic_caching_next_screen: False
 
   #By default rpisurv will check memory usage, set to False to skip memory usage check
   #By default this is True
-  #memory_usage_check: True
+  #  memory_usage_check: False
 
   #By default rpisurv checks every 19 seconds if all cameras on the current active screen are still connectable or if unconnectable become connectable
   #If there is a change in connectable/unconnectable screens rpisurv will update the screen with the new situation
