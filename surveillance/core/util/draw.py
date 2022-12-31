@@ -119,12 +119,12 @@ class Draw:
                         if pos[0] > lastQuarter:
                             logger.debug(f"{self.name} draw touch/mouse handling: detected touch/mouse in lastquarter")
                             touchResult = "next_event"
-                        elif pos[0] > firstQuarter and pos[0] < lastQuarter:
-                            logger.debug(f"{self.name} draw touch/mouse handling: detected touch/mouse in middle")
-                            touchResult = "resume_rotation"
-                        else:
-                            logger.debug(f"{self.name} draw touch/mouse handling: detected touch/mouse in first quarter")
-                            touchResult = "pause_rotation"
+                        # elif pos[0] > firstQuarter and pos[0] < lastQuarter:
+                        #     logger.debug(f"{self.name} draw touch/mouse handling: detected touch/mouse in middle")
+                        #     touchResult = "resume_rotation"
+                        # else:
+                        #     logger.debug(f"{self.name} draw touch/mouse handling: detected touch/mouse in first quarter")
+                        #     touchResult = "pause_rotation"
                         return touchResult
             except pygame.error as e:
                 logger.debug(f"{self.name} draw: Exception " + repr(e))
