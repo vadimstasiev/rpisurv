@@ -16,7 +16,7 @@ advanced:
 
   #By default rpisurv will check memory usage, set to False to skip memory usage check
   #By default this is True
-  #  memory_usage_check: False
+   memory_usage_check: True
 
   #By default rpisurv checks every 19 seconds if all cameras on the current active screen are still connectable or if unconnectable become connectable
   #If there is a change in connectable/unconnectable screens rpisurv will update the screen with the new situation

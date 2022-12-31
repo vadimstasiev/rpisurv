@@ -50,7 +50,8 @@ class Draw:
         else:
             pygame.init()
             self.surface = pygame.display.set_mode((self.resolution_width, self.resolution_height))
-            pygame.mouse.set_visible(False)
+            pygame.mouse.set_visible(True)
+            pygame.mouse.set_cursor((8,8),(0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0))
 
 
 
@@ -115,6 +116,7 @@ class Draw:
                         quarter = display_w / 4
                         firstQuarter = quarter
                         lastQuarter = display_w - quarter
+                        touchResult = ""
                         logger.debug(f"{self.name} draw touch/mouse handling: firstQuarter " + str(firstQuarter) + " and lastquarter " + str(lastQuarter))
                         if pos[0] > lastQuarter:
                             logger.debug(f"{self.name} draw touch/mouse handling: detected touch/mouse in lastquarter")

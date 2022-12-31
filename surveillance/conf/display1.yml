@@ -9,9 +9,11 @@ essentials:
           #        - url: "rtsp://10.100.201.2:8554/Doorbell2" # original stream is slow for unknown reasons, so grabbing http stream from frigate
           force_coordinates: [0, 0, 900, 1080]
           showontop: true
+      duration: 1
 
     - camera_streams:
         - url: "rtsp://10.100.201.2:8554/Front2"
+      duration: 1
 
     - camera_streams:
         - url: "rtsp://10.100.201.2:8554/ParkingLot2"
@@ -20,6 +22,7 @@ essentials:
 
         - url: "rtsp://10.100.201.2:8554/Garden2"
           force_coordinates: [700, 393, 1920, 1080]
+      duration: 1
 
     - camera_streams:
         - url: "rtsp://10.100.201.2:8554/ParkingLot2"
@@ -30,3 +33,4 @@ essentials:
         - url: "rtsp://10.100.201.2:8554/Garden2"
           force_coordinates: [0, 562, 800, 1080]
           showontop: true
+      duration: 1
