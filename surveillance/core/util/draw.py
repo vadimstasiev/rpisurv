@@ -50,8 +50,8 @@ class Draw:
         else:
             pygame.init()
             self.surface = pygame.display.set_mode((self.resolution_width, self.resolution_height))
-            pygame.mouse.set_visible(True)
-            pygame.mouse.set_cursor((8,8),(0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0))
+            pygame.mouse.set_visible(False)
+            # pygame.mouse.set_cursor((8,8),(0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0))
 
 
 
@@ -127,7 +127,8 @@ class Draw:
                         # else:
                         #     logger.debug(f"{self.name} draw touch/mouse handling: detected touch/mouse in first quarter")
                         #     touchResult = "pause_rotation"
-                        return touchResult
+                        # return touchResult
+                        return "next_event"
             except pygame.error as e:
                 logger.debug(f"{self.name} draw: Exception " + repr(e))
                 exit(0)
