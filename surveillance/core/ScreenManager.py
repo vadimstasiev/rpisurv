@@ -145,10 +145,10 @@ class ScreenManager:
     def on_message(self, client, userdata, msg):
         if msg.payload.decode() == "on":
             # os.system("xset -display :0 dpms force on")
-            self.turn_screen_off()
+            self.turn_screen_on()
             logger.info("Turned on screen.")
         elif msg.payload.decode() == "off":
-            self.turn_screen_on()
+            self.turn_screen_off()
             logger.info("Turned off screen.")
 
 
