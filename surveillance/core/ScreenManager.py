@@ -139,17 +139,17 @@ class ScreenManager:
 
     # MQTT callback functions
     def on_connect(self, client, userdata, flags, rc):
-        logger.debug(f"Connected with result code {str(rc)}")
+        logger.info(f"Connected with result code {str(rc)}")
         client.subscribe("homeassistant/cctv-screen/set")
 
     def on_message(self, client, userdata, msg):
         if msg.payload.decode() == "on":
             # os.system("xset -display :0 dpms force on")
             self.turn_screen_off()
-            logger.debug("Turned on screen.")
+            logger.info("Turned on screen.")
         elif msg.payload.decode() == "off":
             self.turn_screen_on()
-            logger.debug("Turned off screen.")
+            logger.info("Turned off screen.")
 
 
     def turn_screen_on(self):
