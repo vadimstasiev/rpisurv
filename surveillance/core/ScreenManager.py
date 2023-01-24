@@ -129,9 +129,9 @@ class ScreenManager:
         vcgm = Vcgencmd()
         current_state = vcgm.display_power_state(2)
         if current_state == 'on':
-            vcgm.display_power_off(2)
+            vcgm.display_power_on(2)
         else:
-            vcgm.display_power_on(2)   
+            vcgm.display_power_off(2)   
 
     def turn_screen_off(self):
         vcgm = Vcgencmd()
