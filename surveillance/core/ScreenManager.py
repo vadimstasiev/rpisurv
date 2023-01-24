@@ -1,5 +1,6 @@
 import logging
 import yaml
+import paho.mqtt.client as mqtt
 from vcgencmd import Vcgencmd
 from .Screen import Screen
 from core.util.draw import Draw
@@ -29,9 +30,26 @@ class ScreenManager:
         self.futurecacheindex = 1
         self.currentcacheindex = -1
 
+        # MQTT client
+        self.client = mqtt.Client()
+        self.client.on_connect = self.on_connect
+        self.client.on_message = self.on_message
+        
+        with open("conf/mqtt.yml", 'r') as ymlfile:
+            mqtt_cfg = yaml.load(ymlfile, Loader=yaml.Loader)
+        mqtt_user = mqtt_cfg['mqtt_broker']['user']
+        mqtt_password = mqtt_cfg['mqtt_broker']['password']
+        mqtt_host = mqtt_cfg['mqtt_broker']['host']
+
+        # Connect to Home Assistant
+        self.client.username_pw_set(mqtt_user, mqtt_password)
+        self.client.connect(mqtt_host, 1883, 60)
+
+        self.client.loop_start()
 
         self._init_screens()    
     
+
 
     def _fetch_display_config(self):
         configpath=f"conf/display{int(self.display['hdmi']) + 1 }.yml"
@@ -114,6 +132,29 @@ class ScreenManager:
             vcgm.display_power_off(2)
         else:
             vcgm.display_power_on(2)   
+
+    def turn_screen_off(self):
+        vcgm = Vcgencmd()
+        vcgm.display_power_off(2)
+
+    # MQTT callback functions
+    def on_connect(self, client, userdata, flags, rc):
+        logger.debug(f"Connected with result code {str(rc)}")
+        client.subscribe("homeassistant/cctv-screen/set")
+
+    def on_message(self, client, userdata, msg):
+        if msg.payload.decode() == "on":
+            # os.system("xset -display :0 dpms force on")
+            self.turn_screen_off()
+            logger.debug("Turned on screen.")
+        elif msg.payload.decode() == "off":
+            self.turn_screen_on()
+            logger.debug("Turned off screen.")
+
+
+    def turn_screen_on(self):
+        vcgm = Vcgencmd()
+        vcgm.display_power_on(2)   
     
     def get_active_screen_duration(self):
         return self.all_screens[self.activeindex].duration
@@ -242,3 +283,4 @@ class ScreenManager:
         for screen in self.all_screens:
             screen.destroy()
         self.drawinstance.destroy()
+        self.client.loop_stop()

@@ -147,6 +147,8 @@ def sigterm_handler(_signo, _stack_frame):
     sys.exit(0)
 
 
+
+
 if __name__ == '__main__':
 
 
@@ -228,5 +230,7 @@ if __name__ == '__main__':
                 # Only try to redraw the screen when disable_probing_for_all_streams option is false, but keep the loop
                 logger.debug(f"MAIN {screenmanager.name}: regular start update_active_screen (every " + str(interval_check_status) + " seconds since start of rpisurv)")
                 screenmanager.update_active_screen()
+
+            
 
         time.sleep(1)

@@ -1,0 +1,4 @@
+mqtt_broker:
+  user: ""
+  password: ""
+  host: ""
