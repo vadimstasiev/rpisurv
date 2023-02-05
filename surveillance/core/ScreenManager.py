@@ -31,9 +31,9 @@ class ScreenManager:
         self.currentcacheindex = -1
 
         # MQTT client
-        self.client = mqtt.Client()
-        self.client.on_connect = self.on_connect
-        self.client.on_message = self.on_message
+        self.mqtt_client = mqtt.Client()
+        self.mqtt_client.on_connect = self.on_connect
+        self.mqtt_client.on_message = self.on_message
         
         with open("conf/mqtt.yml", 'r') as ymlfile:
             mqtt_cfg = yaml.load(ymlfile, Loader=yaml.Loader)
@@ -42,10 +42,10 @@ class ScreenManager:
         mqtt_host = mqtt_cfg['mqtt_broker']['host']
 
         # Connect to Home Assistant
-        self.client.username_pw_set(mqtt_user, mqtt_password)
-        self.client.connect(mqtt_host, 1883, 60)
+        self.mqtt_client.username_pw_set(mqtt_user, mqtt_password)
+        self.mqtt_client.connect(mqtt_host, 1883, 60)
 
-        self.client.loop_start()
+        self.mqtt_client.loop_start()
 
         self._init_screens()    
     
@@ -141,15 +141,22 @@ class ScreenManager:
     def on_connect(self, client, userdata, flags, rc):
         logger.info(f"Connected with result code {str(rc)}")
         client.subscribe("homeassistant/cctv-screen/set")
+        client.subscribe("homeassistant/cctv-screen/usage")
 
     def on_message(self, client, userdata, msg):
-        if msg.payload.decode() == "on":
-            # os.system("xset -display :0 dpms force on")
-            self.turn_screen_on()
-            logger.info("Turned on screen.")
-        elif msg.payload.decode() == "off":
-            self.turn_screen_off()
-            logger.info("Turned off screen.")
+        if msg.topic == "homeassistant/cctv-screen/set":
+            if msg.payload.decode() == "on":
+                self.turn_screen_on()
+                logger.info("Turned on screen.")
+            elif msg.payload.decode() == "off":
+                self.turn_screen_off()
+                logger.info("Turned off screen.")
+        elif msg.topic == "homeassistant/cctv-screen/usage":
+            usage = json.loads(msg.payload.decode())
+            logger.info(f"Received usage message: {usage}")
+            if usage.get("status") == "active":
+                self.turn_screen_on()
+                logger.info("Turned on screen.")
 
 
     def turn_screen_on(self):
@@ -260,7 +267,7 @@ class ScreenManager:
         return self.disable_autorotation
 
     def _init_drawinstance(self):
-        self.drawinstance = Draw([int(self.display["resolution"]["width"]), int(self.display["resolution"]["height"])], self.disable_pygame, self.name)
+        self.drawinstance = Draw([int(self.display["resolution"]["width"]), int(self.display["resolution"]["height"])], self.disable_pygame, self.name, self.mqtt_client)
 
     def get_drawinstance(self):
         return self.drawinstance
@@ -283,4 +290,4 @@ class ScreenManager:
         for screen in self.all_screens:
             screen.destroy()
         self.drawinstance.destroy()
-        self.client.loop_stop()
+        self.mqtt_client.loop_stop()
