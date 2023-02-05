@@ -1,6 +1,7 @@
 import logging
 import yaml
 import paho.mqtt.client as mqtt
+import keyboard
 from vcgencmd import Vcgencmd
 from .Screen import Screen
 from core.util.draw import Draw
@@ -24,7 +25,7 @@ class ScreenManager:
         mqtt_password = mqtt_cfg['mqtt_broker']['password']
         mqtt_host = mqtt_cfg['mqtt_broker']['host']
 
-        self.screen_status = ""
+        self.screen_status = "off"
 
         # Connect to Home Assistant
         self.mqtt_client.username_pw_set(mqtt_user, mqtt_password)
@@ -158,7 +159,7 @@ class ScreenManager:
     def on_connect(self, client, userdata, flags, rc):
         logger.info(f"Connected with result code {str(rc)}")
         client.subscribe("homeassistant/cctv-screen/set")
-        # client.subscribe("homeassistant/cctv-screen/usage")
+        client.subscribe("homeassistant/cctv-screen/controls")
 
     def on_message(self, client, userdata, msg):
         if msg.topic == "homeassistant/cctv-screen/set":
@@ -168,12 +169,44 @@ class ScreenManager:
             elif msg.payload.decode() == "off":
                 self.turn_screen_off()
                 logger.info("Turned off screen.")
-        # elif msg.topic == "homeassistant/cctv-screen/usage":
-        #     usage = json.loads(msg.payload.decode())
-        #     logger.info(f"Received usage message: {usage}")
-        #     if usage.get("status") == "active":
-        #         self.turn_screen_on()
-        #         logger.info("Turned on screen.")
+        elif msg.topic == "homeassistant/cctv-screen/controls":
+            logger.info(f"Received Control: {msg.payload.decode()}")
+            if msg.payload.decode() == "1":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f1")
+            elif msg.payload.decode() == "2":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f2")
+            elif msg.payload.decode() == "3":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f3")
+            elif msg.payload.decode() == "4":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f4")
+            elif msg.payload.decode() == "5":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f5")
+            elif msg.payload.decode() == "6":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f6")
+            elif msg.payload.decode() == "7":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f7")
+            elif msg.payload.decode() == "8":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f8")
+            elif msg.payload.decode() == "9":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f9")
+            elif msg.payload.decode() == "10":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f10")
+            elif msg.payload.decode() == "11":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f11")
+            elif msg.payload.decode() == "12":
+                logger.info(f"Pressed: {msg.payload.decode()}")
+                keyboard.press_and_release("f12")
 
     
     def get_active_screen_duration(self):

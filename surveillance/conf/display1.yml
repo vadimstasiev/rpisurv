@@ -40,3 +40,10 @@ essentials:
           force_coordinates: [0, 562, 800, 1080]
           showontop: true
       duration: 1
+
+    - camera_streams:
+        - url: "http://10.100.201.2:5000/api/Parking_Lot?h=800&fps=2&bbox=1"
+          #- url: "rtsp://10.100.201.2:8554/ParkingLot2"
+          force_coordinates: [-200, 0, 1920, 1400]
+          showontop: true
+      duration: 1
