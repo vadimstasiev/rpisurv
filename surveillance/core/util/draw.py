@@ -28,8 +28,6 @@ import pygame
 import subprocess
 import os
 import signal
-import datetime
-import json
 
 logger = logging.getLogger('l_default')
 
@@ -75,13 +73,9 @@ class Draw:
     def check_input(self):
         if not self.disable_pygame:
             try:
-                data = {
-                    "status": "active",
-                    "timestamp": str(datetime.datetime.now().isoformat())
-                }
                 for event in pygame.event.get():
                     if event.type == pygame.KEYDOWN:
-                        self.mqtt_client.publish("homeassistant/cctv-screen/usage", json.dumps(data))
+                        self.mqtt_client.publish("homeassistant/cctv-screen/usage", "active")
                         if event.key == pygame.K_q or event.key == pygame.K_a or event.key == pygame.K_KP_DIVIDE or event.key == pygame.K_BACKSPACE:
                             logger.debug(f"{self.name} Keypress 'a' or 'q' or 'backspace' or 'keypad /' detected.")
                             return "end_event"
@@ -117,7 +111,7 @@ class Draw:
                     elif event.type == pygame.MOUSEBUTTONUP:
                         #For debug set_visible(True)
                         #pygame.mouse.set_visible(True)
-                        self.mqtt_client.publish("homeassistant/cctv-screen/usage", json.dumps(data))
+                        self.mqtt_client.publish("homeassistant/cctv-screen/usage", "active")
                         logger.debug(f"{self.name} draw: pygame.MOUSEBUTTONUP detected")
                         pos = pygame.mouse.get_pos()
                         display_w = pygame.display.Info().current_w

@@ -1,7 +1,6 @@
 import logging
 import yaml
 import paho.mqtt.client as mqtt
-import json
 from vcgencmd import Vcgencmd
 from .Screen import Screen
 from core.util.draw import Draw
@@ -155,12 +154,12 @@ class ScreenManager:
             elif msg.payload.decode() == "off":
                 self.turn_screen_off()
                 logger.info("Turned off screen.")
-        elif msg.topic == "homeassistant/cctv-screen/usage":
-            usage = json.loads(msg.payload.decode())
-            logger.info(f"Received usage message: {usage}")
-            if usage.get("status") == "active":
-                self.turn_screen_on()
-                logger.info("Turned on screen.")
+        # elif msg.topic == "homeassistant/cctv-screen/usage":
+        #     usage = json.loads(msg.payload.decode())
+        #     logger.info(f"Received usage message: {usage}")
+        #     if usage.get("status") == "active":
+        #         self.turn_screen_on()
+        #         logger.info("Turned on screen.")
 
 
     def turn_screen_on(self):
