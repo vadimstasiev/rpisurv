@@ -35,7 +35,7 @@ logger = logging.getLogger('l_default')
 
 class Draw:
     """This class manages everything non-video draw elements"""
-    def __init__(self, resolution, disable_pygame, name, mqtt_client):
+    def __init__(self, resolution, disable_pygame, name, mqtt_client, get_screen_state):
         self.resolution_width=int(resolution[0])
         self.resolution_height=int(resolution[1])
         self.name=name
@@ -43,6 +43,7 @@ class Draw:
         self.blackbackground_proc=None
         self.disable_pygame=disable_pygame
         self.mqtt_client = mqtt_client
+        self.get_screen_state = get_screen_state
 
         if self.disable_pygame:
             logger.debug(
@@ -74,8 +75,9 @@ class Draw:
         if not self.disable_pygame:
             try:
                 for event in pygame.event.get():
-                    if event.type == pygame.KEYDOWN:
+                    if(self.get_screen_state()=='off'):
                         self.mqtt_client.publish("homeassistant/cctv-screen/usage", "active")
+                    elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_q or event.key == pygame.K_a or event.key == pygame.K_KP_DIVIDE or event.key == pygame.K_BACKSPACE:
                             logger.debug(f"{self.name} Keypress 'a' or 'q' or 'backspace' or 'keypad /' detected.")
                             return "end_event"
@@ -111,7 +113,6 @@ class Draw:
                     elif event.type == pygame.MOUSEBUTTONUP:
                         #For debug set_visible(True)
                         #pygame.mouse.set_visible(True)
-                        self.mqtt_client.publish("homeassistant/cctv-screen/usage", "active")
                         logger.debug(f"{self.name} draw: pygame.MOUSEBUTTONUP detected")
                         pos = pygame.mouse.get_pos()
                         display_w = pygame.display.Info().current_w

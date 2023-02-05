@@ -24,6 +24,8 @@ class ScreenManager:
         mqtt_password = mqtt_cfg['mqtt_broker']['password']
         mqtt_host = mqtt_cfg['mqtt_broker']['host']
 
+        self.screen_status = ""
+
         # Connect to Home Assistant
         self.mqtt_client.username_pw_set(mqtt_user, mqtt_password)
         self.mqtt_client.connect(mqtt_host, 1883, 60)
@@ -131,20 +133,25 @@ class ScreenManager:
     def turn_screen_on_off(self):
         vcgm = Vcgencmd()
         current_state = vcgm.display_power_state(2)
+        self.screen_status = 'on'
         if current_state == 'on':
             vcgm.display_power_on(2)
         else:
             vcgm.display_power_off(2)   
 
     def turn_screen_off(self):
+        self.screen_status = 'on'
         vcgm = Vcgencmd()
         vcgm.display_power_off(2)
+
+    def get_screen_state(self):
+        return self.screen_status
 
     # MQTT callback functions
     def on_connect(self, client, userdata, flags, rc):
         logger.info(f"Connected with result code {str(rc)}")
         client.subscribe("homeassistant/cctv-screen/set")
-        client.subscribe("homeassistant/cctv-screen/usage")
+        # client.subscribe("homeassistant/cctv-screen/usage")
 
     def on_message(self, client, userdata, msg):
         if msg.topic == "homeassistant/cctv-screen/set":
@@ -270,7 +277,7 @@ class ScreenManager:
         return self.disable_autorotation
 
     def _init_drawinstance(self):
-        self.drawinstance = Draw([int(self.display["resolution"]["width"]), int(self.display["resolution"]["height"])], self.disable_pygame, self.name, self.mqtt_client)
+        self.drawinstance = Draw([int(self.display["resolution"]["width"]), int(self.display["resolution"]["height"])], self.disable_pygame, self.name, self.mqtt_client, self.get_screen_state)
 
     def get_drawinstance(self):
         return self.drawinstance
