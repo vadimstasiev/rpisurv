@@ -131,8 +131,6 @@ class Draw:
                         #     touchResult = "pause_rotation"
                         # return touchResult
                         logger.info(f"Touch input, screen is {self.get_screen_state()}")
-                        if self.get_screen_state()=='off':
-                            return "screen_on"
                         return "next_event"
             except pygame.error as e:
                 logger.debug(f"{self.name} draw: Exception " + repr(e))
