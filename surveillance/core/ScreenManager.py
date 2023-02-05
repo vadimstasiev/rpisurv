@@ -141,6 +141,11 @@ class ScreenManager:
             self.screen_status = 'off'
             vcgm.display_power_off(2)   
 
+    def turn_screen_on(self):
+        self.screen_status = 'on'
+        vcgm = Vcgencmd()
+        vcgm.display_power_on(2)   
+
     def turn_screen_off(self):
         self.screen_status = 'off'
         vcgm = Vcgencmd()
@@ -170,10 +175,6 @@ class ScreenManager:
         #         self.turn_screen_on()
         #         logger.info("Turned on screen.")
 
-
-    def turn_screen_on(self):
-        vcgm = Vcgencmd()
-        vcgm.display_power_on(2)   
     
     def get_active_screen_duration(self):
         return self.all_screens[self.activeindex].duration
