@@ -12,6 +12,24 @@ logger = logging.getLogger('l_default')
 class ScreenManager:
     """This class creates and handles screens objects and rotation"""
     def __init__(self,screen_manager_name, display, enable_opportunistic_caching_next_screen, disable_pygame):
+
+        # MQTT client
+        self.mqtt_client = mqtt.Client()
+        self.mqtt_client.on_connect = self.on_connect
+        self.mqtt_client.on_message = self.on_message
+        
+        with open("conf/mqtt.yml", 'r') as ymlfile:
+            mqtt_cfg = yaml.load(ymlfile, Loader=yaml.Loader)
+        mqtt_user = mqtt_cfg['mqtt_broker']['user']
+        mqtt_password = mqtt_cfg['mqtt_broker']['password']
+        mqtt_host = mqtt_cfg['mqtt_broker']['host']
+
+        # Connect to Home Assistant
+        self.mqtt_client.username_pw_set(mqtt_user, mqtt_password)
+        self.mqtt_client.connect(mqtt_host, 1883, 60)
+
+        self.mqtt_client.loop_start()
+
         self.name = screen_manager_name
         self.want_to_be_destroyed = False
         self.firstrun = True
@@ -30,22 +48,7 @@ class ScreenManager:
         self.futurecacheindex = 1
         self.currentcacheindex = -1
 
-        # MQTT client
-        self.mqtt_client = mqtt.Client()
-        self.mqtt_client.on_connect = self.on_connect
-        self.mqtt_client.on_message = self.on_message
         
-        with open("conf/mqtt.yml", 'r') as ymlfile:
-            mqtt_cfg = yaml.load(ymlfile, Loader=yaml.Loader)
-        mqtt_user = mqtt_cfg['mqtt_broker']['user']
-        mqtt_password = mqtt_cfg['mqtt_broker']['password']
-        mqtt_host = mqtt_cfg['mqtt_broker']['host']
-
-        # Connect to Home Assistant
-        self.mqtt_client.username_pw_set(mqtt_user, mqtt_password)
-        self.mqtt_client.connect(mqtt_host, 1883, 60)
-
-        self.mqtt_client.loop_start()
 
         self._init_screens()    
     
