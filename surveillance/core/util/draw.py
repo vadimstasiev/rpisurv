@@ -75,11 +75,7 @@ class Draw:
         if not self.disable_pygame:
             try:
                 for event in pygame.event.get():
-                    logger.info(f"Current screen state is {self.get_screen_state()}")
-                    if(self.get_screen_state()=='off'):
-                        logger.info("Publish event active")
-                        self.mqtt_client.publish("homeassistant/cctv-screen/usage", "active")
-                    elif event.type == pygame.KEYDOWN:
+                    if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_q or event.key == pygame.K_a or event.key == pygame.K_KP_DIVIDE or event.key == pygame.K_BACKSPACE:
                             logger.debug(f"{self.name} Keypress 'a' or 'q' or 'backspace' or 'keypad /' detected.")
                             return "end_event"
@@ -134,6 +130,9 @@ class Draw:
                         #     logger.debug(f"{self.name} draw touch/mouse handling: detected touch/mouse in first quarter")
                         #     touchResult = "pause_rotation"
                         # return touchResult
+                        logger.info(f"Touch input, screen is {self.get_screen_state()}")
+                        if self.get_screen_state()=='off':
+                            return "screen_on"
                         return "next_event"
             except pygame.error as e:
                 logger.debug(f"{self.name} draw: Exception " + repr(e))
