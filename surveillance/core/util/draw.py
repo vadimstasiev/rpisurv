@@ -28,6 +28,7 @@ import pygame
 import subprocess
 import os
 import signal
+import datetime
 
 logger = logging.getLogger('l_default')
 
@@ -75,7 +76,7 @@ class Draw:
             try:
                 data = {
                     "status": "active",
-                    "timestamp": str(datetime.now().isoformat())
+                    "timestamp": str(datetime.datetime.now().isoformat())
                 }
                 for event in pygame.event.get():
                     if event.type == pygame.KEYDOWN:
