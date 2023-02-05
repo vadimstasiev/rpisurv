@@ -75,7 +75,9 @@ class Draw:
         if not self.disable_pygame:
             try:
                 for event in pygame.event.get():
+                    logger.info(f"Current screen state is {self.get_screen_state()}")
                     if(self.get_screen_state()=='off'):
+                        logger.info("Publish event active")
                         self.mqtt_client.publish("homeassistant/cctv-screen/usage", "active")
                     elif event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_q or event.key == pygame.K_a or event.key == pygame.K_KP_DIVIDE or event.key == pygame.K_BACKSPACE:
