@@ -50,7 +50,7 @@ read
 
 #Install needed packages
 sudo apt-get update
-sudo apt-get install vlc rsync sed coreutils fbset ffmpeg openssl procps python3-yaml python3-openssl python3 python3-pip libraspberrypi-bin -y
+sudo apt-get install xorg vlc rsync sed coreutils fbset ffmpeg openssl procps python3-yaml python3-openssl python3 python3-pip libraspberrypi-bin -y
 sudo pip3 install vcgencmd pygame paho-mqtt==1.6.1 python-etcd==0.4.5 keyboard
 
 if ! is_vlc_mmal_present;then
